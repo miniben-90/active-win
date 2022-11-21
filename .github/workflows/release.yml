@@ -22,13 +22,9 @@ jobs:
           - x64
         node:
           - 10
-          - 11
           - 12
-          - 13
           - 14
-          - 15
           - 16
-          - 17
           - 18
         include:
           - os: windows-latest
@@ -39,15 +35,25 @@ jobs:
     name: ${{ matrix.os }} (node=${{ matrix.node }}, host=${{ matrix.host }}, target=${{ matrix.target }})
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-          architecture: ${{ matrix.host }}
 
       - name: Add msbuild to PATH
+        if: matrix.node != 10
         uses: microsoft/setup-msbuild@v1.1
         with:
           msbuild-architecture: ${{ matrix.target }}
+
+      - name: Add msbuild to PATH
+        if: matrix.node == 10
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          vs-version: '15.9'
+          msbuild-architecture: ${{ matrix.target }}
+
+      - name: Setup node (node=${{ matrix.node }}, host=${{ matrix.host }})
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.host }}
 
       - name: Install dependencies
         run: yarn install --ignore-scripts
