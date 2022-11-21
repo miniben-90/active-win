@@ -20,10 +20,10 @@
 	"types": "./index.d.ts",
 	"binary": {
 		"module_name": "node-active-win",
-		"module_path": "./lib/binding/napi-v{napi_build_version}-{platform}-{libc}-{arch}",
-		"host": "https://api.github.com/miniben-90/active-win/releases/download/",
-		"remote_path": "v{version}",
-		"package_name": "napi-v{napi_build_version}-{platform}-{libc}-{arch}.tar.gz",
+		"module_path": "./lib/binding/napi-{napi_build_version}-{platform}-{libc}-{arch}",
+		"host": "https://github.com/miniben-90/active-win/releases/download/",
+		"remote_path": "{version}",
+		"package_name": "napi-{napi_build_version}-{platform}-{libc}-{arch}.tar.gz",
 		"napi_versions": [
 			3,
 			6
