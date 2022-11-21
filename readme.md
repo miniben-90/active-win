@@ -12,6 +12,14 @@ Users on macOS 10.13 or earlier needs to download the [Swift runtime support lib
 npm install active-win
 ```
 
+## For development
+
+In case of development:
+
+```sh
+yarn install --ignore-scripts
+```
+
 ## Usage
 
 ```js
