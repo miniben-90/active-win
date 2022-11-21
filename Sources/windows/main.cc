@@ -5,7 +5,7 @@
 #include <shtypes.h>
 #include <string>
 #include <windows.h>
-#include <filesystem>
+// #include <filesystem>
 #include <psapi.h>
 #include <version>
 #include <dwmapi.h>
@@ -29,6 +29,20 @@ T getValueFromCallbackData(const Napi::CallbackInfo &info, unsigned handleIndex)
 std::wstring get_wstring(const std::string str)
 {
   return std::wstring(str.begin(), str.end());
+}
+
+std::string getFileName(const std::string &s)
+{
+  char sep = '/';
+#ifdef _WIN32
+  sep = '\\';
+#endif
+  size_t i = s.rfind(sep, s.length());
+  if (i != std::string::npos)
+  {
+    return (s.substr(i + 1, s.length() - i));
+  }
+  return ("");
 }
 
 // Convert wstring into utf8 string
@@ -95,7 +109,7 @@ OwnerWindowInfo getProcessPathAndName(const HANDLE &phlde)
   wchar_t exeName[MAX_PATH]{};
   QueryFullProcessImageNameW(phlde, 0, exeName, &dwSize);
   std::string path = toUtf8(exeName);
-  std::string name = toUtf8(std::filesystem::path(path).filename());
+  std::string name = getFileName(path);
 
   DWORD dwHandle = 0;
   wchar_t *wspath(exeName);
@@ -165,7 +179,7 @@ Napi::Value getWindowInformation(const HWND &hwnd, const Napi::CallbackInfo &inf
   OwnerWindowInfo ownerInfo = getProcessPathAndName(phlde);
 
   // ApplicationFrameHost & Universal Windows Platform Support
-  if (std::filesystem::path(ownerInfo.path).filename() == "ApplicationFrameHost.exe")
+  if (getFileName(ownerInfo.path) == "ApplicationFrameHost.exe")
   {
     BOOL result = EnumChildWindows(hwnd, (WNDENUMPROC)EnumChildWindowsProc, (LPARAM)&ownerInfo);
     if (result == FALSE && newOwner.name.size())
