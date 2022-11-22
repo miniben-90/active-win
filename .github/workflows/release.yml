@@ -21,7 +21,7 @@ jobs:
         target:
           - x64
         node:
-          - 10
+          # - 10 # Issue with gyp build can build with this version.
           - 12
           - 14
           - 16
@@ -37,17 +37,16 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Add msbuild to PATH
-        if: matrix.node != 10
         uses: microsoft/setup-msbuild@v1.1
         with:
           msbuild-architecture: ${{ matrix.target }}
 
-      - name: Add msbuild to PATH
-        if: matrix.node == 10
-        uses: microsoft/setup-msbuild@v1.1
-        with:
-          vs-version: '15.9'
-          msbuild-architecture: ${{ matrix.target }}
+      # - name: Add msbuild to PATH
+      #   if: matrix.node == 10
+      #   uses: microsoft/setup-msbuild@v1.1
+      #   with:
+      #     vs-version: '15.9'
+      #     msbuild-architecture: ${{ matrix.target }}
 
       - name: Setup node (node=${{ matrix.node }}, host=${{ matrix.host }})
         uses: actions/setup-node@v3
@@ -66,16 +65,6 @@ jobs:
           else
             echo "TARGET=${{ matrix.target }}" >> $GITHUB_ENV
           fi
-
-      - name: Set VCINSTALLDIR path for node 10
-        if: matrix.node == 10
-        shell: bash
-        run: |
-          echo "VCINSTALLDIR=\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\VC\"" >> $GITHUB_ENV
-
-      - name: Set msvs_version to 2022
-        if: matrix.node == 10
-        run: npm config set msvs_version 2022
 
       - name: Configure build
         run: yarn node-pre-gyp configure --target_arch=${{ env.TARGET }}
