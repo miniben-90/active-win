@@ -54,14 +54,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           architecture: ${{ matrix.host }}
-
-      - name: Set msvs_version to 2022
-        if: matrix.node == 10
-        run: npm config set msvs_version 2022
-
       - name: Install dependencies
         run: yarn install --ignore-scripts
-
 
       - name: Add env vars
         shell: bash
@@ -72,6 +66,17 @@ jobs:
           else
             echo "TARGET=${{ matrix.target }}" >> $GITHUB_ENV
           fi
+
+      - name: Set VCINSTALLDIR path for node 10
+        if: matrix.node == 10
+        shell: bash
+        run: |
+          echo "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\VC" >> VCINSTALLDIR
+
+      - name: Set msvs_version to 2022
+        if: matrix.node == 10
+        run: npm config set msvs_version 2022
+
 
       - name: Configure build
         run: yarn node-pre-gyp configure --target_arch=${{ env.TARGET }}
