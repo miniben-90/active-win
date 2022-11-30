@@ -87,6 +87,7 @@ jobs:
           NODE_PRE_GYP_GITHUB_TOKEN: ${{ github.token }}
 
   publish:
+    needs: [ build ]
     runs-on: macos-latest
     strategy:
       fail-fast: false
@@ -94,6 +95,7 @@ jobs:
         node-version:
           - 18
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
