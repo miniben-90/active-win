@@ -8,6 +8,9 @@ concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -101,5 +104,3 @@ jobs:
       - run: npm run test-ci
       - run: npm version ${{ github.event.release.tag_name }}
       - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
