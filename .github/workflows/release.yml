@@ -49,6 +49,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           architecture: ${{ matrix.host }}
+          registry-url: 'https://npm.pkg.github.com'
+          scope: "@${{github.actor}}"
       - name: Install dependencies
         run: yarn install --ignore-scripts
 
