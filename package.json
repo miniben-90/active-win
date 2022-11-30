@@ -1,13 +1,12 @@
 {
-	"name": "active-win",
-	"version": "7.7.2",
+	"name": "@miniben-90/active-win",
+	"version": "999.0.0",
 	"description": "Get metadata about the active window (title, id, bounds, owner, URL, etc). Works on macOS, Linux, Windows.",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/sindresorhus/active-win.git"
+		"url": "git+https://github.com/miniben-90/active-win.git"
 	},
-	"funding": "https://github.com/sponsors/sindresorhus",
 	"author": {
 		"name": "Sindre Sorhus",
 		"email": "sindresorhus@gmail.com",
@@ -21,7 +20,7 @@
 	"binary": {
 		"module_name": "node-active-win",
 		"module_path": "./lib/binding/napi-{napi_build_version}-{platform}-{libc}-{arch}",
-		"host": "https://github.com/sindresorhus/active-win/releases/download/",
+		"host": "https://github.com/miniben-90/active-win/releases/download/",
 		"remote_path": "{version}",
 		"package_name": "napi-{napi_build_version}-{platform}-{libc}-{arch}.tar.gz",
 		"napi_versions": [

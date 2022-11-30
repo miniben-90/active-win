@@ -82,3 +82,25 @@ jobs:
         if: matrix.node == 18 && startsWith(github.ref, 'refs/tags/')
         env:
           NODE_PRE_GYP_GITHUB_TOKEN: ${{ github.token }}
+
+  publish:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - 18
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://npm.pkg.github.com'
+          scope: "@${{github.actor}}"
+      - run: npm install --ignore-scripts
+      - run: npm run build:macos
+      - run: npm run test-ci
+      - run: npm version ${{ github.event.release.tag_name }}
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }
+  
