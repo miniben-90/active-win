@@ -81,9 +81,15 @@ jobs:
           path: build/stage/*/*
           retention-days: 7
 
-      - name: Set package version to ${{ github.event.release.tag_name }}
-        if: matrix.node == 18 && startsWith(github.ref, 'refs/tags/')
-        run: npm version ${{ github.event.release.tag_name }}
+      # - name: Set git config
+      #   if: matrix.node == 18 && startsWith(github.ref, 'refs/tags/')
+      #   run: |
+      #     git config user.email "${{github.actor}}"
+      #     git config user.name "${{github.actor}}@users.noreply.github.com"
+
+      # - name: Set package version to ${{ github.event.release.tag_name }}
+      #   if: matrix.node == 18 && startsWith(github.ref, 'refs/tags/')
+      #   run: npm version ${{ github.event.release.tag_name }}
 
       # Run only for matrix.node 18
       - name: Upload binaries to GitHub Release
@@ -110,5 +116,5 @@ jobs:
       - run: npm install --ignore-scripts
       - run: npm run build:macos
       - run: npm run test-ci
-      - run: npm version ${{ github.event.release.tag_name }}
+      # - run: npm version ${{ github.event.release.tag_name }}
       - run: npm publish
